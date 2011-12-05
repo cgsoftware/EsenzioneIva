@@ -1,0 +1,7 @@
+#Sun Dec 04 16:13:09 CET 2011
+eclipse.preferences.version=1
+encoding/__init__.py=utf-8
+encoding/__openerp__.py=utf-8
+encoding/fiscaldocument.py=utf-8
+encoding/partner.py=utf-8
+encoding/sale.py=utf-8

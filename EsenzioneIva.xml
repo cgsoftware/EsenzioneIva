@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+
+	<record model="ir.ui.view" id="view_ese_iva_partner">
+	  <field name="name">view_ese_iva_partner</field>
+	  <field name="model">res.partner</field>
+	  <field name="inherit_id" ref="base.view_partner_form"/>
+	  <field name="arch" type="xml">
+	    <notebook position="inside">
+	      <page string="Esenzione IVA">
+		<separator colspan="4" string="Dati di Esenzione Iva"/>
+		<field name="cod_esenzione_iva"/>
+		<newline/>
+		<field name="dati_es_iva"/>
+
+		<newline/>
+		<field name="scad_esenzione_iva"/>
+	      </page>
+	    </notebook>
+	  </field>
+	</record>
+
+	       <record model="ir.ui.view" id="view_order_form_eseiva">
+            <field name="name">view.order.form.eseiva</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <field name="origin" position="after" > 
+                    <field name='cod_esenzione_iva' />
+                    <field name='scad_esenzione_iva'  />
+                
+                </field>
+                  
+            </field>
+           </record>
+	
+	<record  model="ir.ui.view" id="view_fiscaldoc_form_eseiva">
+            <field name="name">fiscaldoc.form.eseiva</field>
+            <field name="model">fiscaldoc.header</field>
+            <field name="inherit_id" ref="ItalianFiscalDocument.view_fiscaldoc_form"/>
+            <field name="arch" type="xml">
+                <field name="righe_totali_iva"  position="before">
+                	 <group col="6" string="Dati Esenzione Iva" colspan="4">
+                	      <field name='cod_esenzione_iva' />
+                	      <field name='scad_esenzione_iva' />
+                	                 	  
+                     </group>       
+                </field>
+    		</field>
+        </record>
+	
+	</data>
+</openerp>
