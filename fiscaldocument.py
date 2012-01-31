@@ -187,7 +187,24 @@ class FiscalDocIva(osv.osv):
                     'imposta':righe_iva[riga]['imposta'],
                     }
             res = self.pool.get('fiscaldoc.iva').create(cr, uid, record)
-        #import pdb;pdb.set_trace()  
+        #import pdb;pdb.set_trace()
+        if 'cod_conai' in self.pool.get('fiscaldoc.righe')._columns:
+        # calcoli conai 
+         res = self.pool.get('conai.castelletto').agg_tot_conai(cr,uid,ids,context)
+         conai_ids = self.pool.get('conai.castelletto').search(cr,uid,[('name','=',ids)])
+         if conai_ids: #ci sono righe di castelletto conai
+            for riga_cast in self.pool.get('conai.castelletto').browse(cr,uid,conai_ids):
+                iva_id = self.pool.get("fiscaldoc.iva").search(cr,uid,[('name','=',riga_cast.name.id),('codice_iva','=',riga_cast.codice_iva.id)])
+                if iva_id:  # somma il solo imponibile
+                    iva={}
+                    iva['imponibile']= self.pool.get("fiscaldoc.iva").browse(cr,uid,iva_id[0]).imponibile+riga_cast.totale_conai
+                    ok = self.pool.get("fiscaldoc.iva").write(cr,uid,[iva_id[0]],iva)           
+        # ora ricalcola l'imposta        
+            righe_iva = self.pool.get("fiscaldoc.iva").search(cr,uid,[('name','=',ids)])            
+            for rg_iva in self.pool.get("fiscaldoc.iva").browse(cr,uid,righe_iva):
+                perc_iva = get_perc_iva(self, cr, uid, ids, rg_iva.codice_iva.id, context)
+                imposta = rg_iva.imponibile * perc_iva
+                ok =  self.pool.get("fiscaldoc.iva").write(cr,uid,[rg_iva.id],{'imposta':imposta})  
         return True
     
     
