@@ -34,8 +34,8 @@ FiscalDocHeader()
 class FiscalDocRighe(osv.osv):
     _inherit = 'fiscaldoc.righe'
     
-    def onchange_articolo(self, cr, uid, ids, product_id, listino_id, qty, partner_id, data_doc, uom):
-                res = super(FiscalDocRighe, self).onchange_articolo(cr, uid, ids, product_id, listino_id, qty, partner_id, data_doc, uom)
+    def onchange_articolo(self, cr, uid, ids, product_id, listino_id, qty, partner_id, data_doc, uom,context):
+                res = super(FiscalDocRighe, self).onchange_articolo(cr, uid, ids, product_id, listino_id, qty, partner_id, data_doc, uom,context)
                 v = res.get('value', False)
                 if product_id:
                     partner = self.pool.get('res.partner').browse(cr,uid,partner_id)
