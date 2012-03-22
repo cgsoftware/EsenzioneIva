@@ -37,12 +37,16 @@ class FiscalDocRighe(osv.osv):
     def onchange_articolo(self, cr, uid, ids, product_id, listino_id, qty, partner_id, data_doc, uom,context):
                 res = super(FiscalDocRighe, self).onchange_articolo(cr, uid, ids, product_id, listino_id, qty, partner_id, data_doc, uom,context)
                 v = res.get('value', False)
+                warning = res.get('warning', False)
+                domain = res.get('domain', False)
+                
                 if product_id:
                     partner = self.pool.get('res.partner').browse(cr,uid,partner_id)
                     #import pdb;pdb.set_trace()
                     if partner.cod_esenzione_iva and partner.scad_esenzione_iva >= data_doc: 
                         v['codice_iva']=partner.cod_esenzione_iva.id
-                return {'value':v}    
+                return {'value': v, 'domain': domain, 'warning': warning}
+                #return {'value':v}    
             
     
 FiscalDocRighe()
