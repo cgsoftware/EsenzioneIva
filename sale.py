@@ -18,6 +18,7 @@ class sale_order(osv.osv):
     def onchange_partner_id(self, cr, uid, ids, part):
         res = super(sale_order,self).onchange_partner_id(cr, uid, ids, part)
         val = res.get('value', False)
+        warning = res.get('warning', False)
         #import pdb;pdb.set_trace()
         if part: 
              part = self.pool.get('res.partner').browse(cr, uid, part)
@@ -25,7 +26,7 @@ class sale_order(osv.osv):
                  val['cod_esenzione_iva']= part.cod_esenzione_iva.id
                  val['scad_esenzione_iva']=part.scad_esenzione_iva
         
-        return {'value': val}               
+        return {'value': val,'warning':warning}               
     
     
     
